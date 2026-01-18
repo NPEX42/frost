@@ -1,0 +1,185 @@
+{
+  "main": {
+    "id": "cf1147aae0ae40e2",
+    "type": "split",
+    "children": [
+      {
+        "id": "273b70c70ffc72e3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9bdc7fae0bab6e6d",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Architecture.canvas",
+                "viewState": {
+                  "x": 277.40543680993113,
+                  "y": -269.94735277490486,
+                  "zoom": 0.19999999999999996
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "Architecture"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9e5144663ec71746",
+    "type": "split",
+    "children": [
+      {
+        "id": "e2ca2f167352a3c3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7d1bab43dafa0978",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "66271a48fb0a4dd9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "33f9dcac93959038",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "886beb225263d9f3",
+    "type": "split",
+    "children": [
+      {
+        "id": "a13232568f658671",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d6b2924e52f0b0b0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Architecture.canvas",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Architecture"
+            }
+          },
+          {
+            "id": "16a6325981d6560f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Architecture.canvas",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Architecture"
+            }
+          },
+          {
+            "id": "71e36069b31ab523",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "db775b29f01d0446",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Architecture.canvas",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Architecture"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "9bdc7fae0bab6e6d",
+  "lastOpenFiles": [
+    "Docs/Overview.md.part",
+    "Untitled.base.part",
+    "Docs/Overview.md",
+    "Architecture.canvas",
+    "Untitled.base",
+    "Docs",
+    "Welcome.md"
+  ]
+}

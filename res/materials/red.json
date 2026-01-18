@@ -1,0 +1,8 @@
+{
+    "name": "red",
+    "sourcePath": "res/shaders/basic.wgsl",
+    "fs_entry": "fs_main",
+    "vs_entry": "vs_main",
+    "topology": "TriangleList",
+    "has_depth": true
+}

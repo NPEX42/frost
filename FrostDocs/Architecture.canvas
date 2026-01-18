@@ -1,0 +1,11 @@
+{
+	"nodes":[
+		{"id":"3c1abec1ad076860","type":"text","text":"RenderPipeline","x":-20,"y":-360,"width":183,"height":60},
+		{"id":"9d4dfe8391f0fda9","type":"text","text":"GraphicsContext","x":-20,"y":-260,"width":183,"height":60},
+		{"id":"bd8b7b741969fba8","x":220,"y":-360,"width":183,"height":60,"type":"text","text":"MaterialSpec"}
+	],
+	"edges":[
+		{"id":"302bf8feb2f49a59","fromNode":"9d4dfe8391f0fda9","fromSide":"top","toNode":"3c1abec1ad076860","toSide":"bottom"},
+		{"id":"2a3ec97640c6c496","fromNode":"3c1abec1ad076860","fromSide":"right","toNode":"bd8b7b741969fba8","toSide":"left"}
+	]
+}
