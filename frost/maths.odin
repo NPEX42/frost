@@ -1,4 +1,4 @@
-package frostMaths
+package frost
 
 import "core:math/linalg"
 mat4f :: distinct matrix[4, 4]f32

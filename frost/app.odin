@@ -9,6 +9,9 @@ ShutdownFn :: #type proc();
 ResizeFn :: #type proc(width: f32, height: f32)
 
 Application :: struct {
+    width: u32, 
+    height: u32,
+    title: string,
     on_create: CreateFn,
     on_render: RenderFn,
     on_update: UpdateFn,

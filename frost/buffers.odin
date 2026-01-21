@@ -1,10 +1,8 @@
-package frostGfx
+package frost
 
 import "vendor:wgpu"
 import "core:log"
 import "core:os"
-
-import ".."
 
 Buffer :: struct($T: typeid) {
     inner: wgpu.Buffer,
@@ -13,9 +11,8 @@ Buffer :: struct($T: typeid) {
 
 CreateBuffer :: proc($T: typeid, length: int, usage: wgpu.BufferUsageFlags, label: string = "DataBuffer") -> Buffer(T) {
     buff := Buffer(T) {}
-    g := frost.gfx
 
-    buff.inner = wgpu.DeviceCreateBuffer(g.device, &wgpu.BufferDescriptor {
+    buff.inner = wgpu.DeviceCreateBuffer(gfx.device, &wgpu.BufferDescriptor {
         label = label,
         mappedAtCreation = false,
         size = u64(size_of(T) * length),
@@ -28,8 +25,7 @@ CreateBuffer :: proc($T: typeid, length: int, usage: wgpu.BufferUsageFlags, labe
 }
 
 UploadBufferData :: proc($T: typeid, buffer: ^Buffer(T)) {
-    g := frost.gfx
-    wgpu.QueueWriteBuffer(g.queue, buffer.inner, 0, raw_data(buffer.data), size_of(T) * len(buffer.data))
+    wgpu.QueueWriteBuffer(gfx.queue, buffer.inner, 0, raw_data(buffer.data), size_of(T) * len(buffer.data))
 }
 
 SetBufferData :: proc($T: typeid, buffer: ^Buffer(T), data: []T) {
@@ -51,8 +47,7 @@ SetVertexBufferData :: proc(buffer: ^VertexBuffer, data: []Vertex3D) {
 }
 
 BindVertexBuffer :: proc(buffer: ^VertexBuffer) {
-    g := frost.gfx
-    wgpu.RenderPassEncoderSetVertexBuffer(g.render_pass, 0, buffer.inner, 0, u64(len(buffer.data) * size_of(Vertex3D)))
+    wgpu.RenderPassEncoderSetVertexBuffer(gfx.render_pass, 0, buffer.inner, 0, u64(len(buffer.data) * size_of(Vertex3D)))
 }
 
 
@@ -73,8 +68,7 @@ SetIndexBufferU16Data :: proc(buffer: ^IndexBufferU16, data: []u16) {
 }
 
 BindIndexBufferU16 :: proc(buffer: ^IndexBufferU16) {
-    g := frost.gfx
-    wgpu.RenderPassEncoderSetIndexBuffer(g.render_pass, buffer.inner, .Uint16, 0, u64(len(buffer.data) * size_of(u16)))
+    wgpu.RenderPassEncoderSetIndexBuffer(gfx.render_pass, buffer.inner, .Uint16, 0, u64(len(buffer.data) * size_of(u16)))
 }
 
 
@@ -93,6 +87,25 @@ SetIndexBufferU32Data :: proc(buffer: ^IndexBufferU32, data: []u32) {
 }
 
 BindIndexBufferU32 :: proc(buffer: ^IndexBufferU32) {
-    g := frost.gfx
-    wgpu.RenderPassEncoderSetIndexBuffer(g.render_pass, buffer.inner, .Uint32, 0, u64(len(buffer.data) * size_of(u32)))
+    wgpu.RenderPassEncoderSetIndexBuffer(gfx.render_pass, buffer.inner, .Uint32, 0, u64(len(buffer.data) * size_of(u32)))
+}
+
+
+
+Vertex2DBuffer :: Buffer(Vertex2D)
+
+CreateVertex2DBuffer :: proc(length: int, label: string = "VertexBuffer") -> Vertex2DBuffer {
+    return CreateBuffer(Vertex2D, length, {.CopyDst, .Vertex}, label)
+}
+
+UploadVertex2DBufferData :: proc(buffer: ^Vertex2DBuffer) {
+    UploadBufferData(Vertex2D, buffer)
+} 
+
+SetVertex2DBufferData :: proc(buffer: ^Vertex2DBuffer, data: []Vertex2D) {
+    SetBufferData(Vertex2D, buffer, data)
+}
+
+BindVertex2DBuffer :: proc(buffer: ^Vertex2DBuffer) {
+    wgpu.RenderPassEncoderSetVertexBuffer(gfx.render_pass, 0, buffer.inner, 0, u64(len(buffer.data) * size_of(Vertex2D)))
 }

@@ -1,11 +1,10 @@
-package frostGfx
+package frost
 
 import "vendor:glfw/bindings"
 import "core:log"
 import "core:os"
 import "vendor:wgpu"
 
-import ".."
 
 UniformInfo :: struct {
     elemSize: u32,
@@ -17,7 +16,6 @@ UniformBuffer :: struct($T: typeid) {
 }
 
 CreateUniformBufferWithData :: proc($T: typeid, data: ^T) -> ^UniformBuffer(T) {
-    gfx := frost.gfx
 
     buff := new(UniformBuffer(T))
 
@@ -45,7 +43,7 @@ CreateUniformBufferWithData :: proc($T: typeid, data: ^T) -> ^UniformBuffer(T) {
 SetUniformData :: proc($T: typeid, uniform: ^UniformBuffer(T), data: ^T) {
     // Write data to buffer
     wgpu.QueueWriteBuffer(
-        wgpu.DeviceGetQueue(frost.gfx.device),
+        wgpu.DeviceGetQueue(gfx.device),
         uniform.buffer,
         0,  // offset
         data,
@@ -65,7 +63,6 @@ BindingGroup :: struct {
 }
 
 CreateBindingGroup :: proc(index: u32, buffers: []UniformInfo, stages: bit_set[wgpu.ShaderStage; u64], name: string = "BindingGroup") -> BindingGroup {
-    gfx := frost.gfx
     entrys := make_slice([]wgpu.BindGroupLayoutEntry, len(buffers))
 
 
@@ -99,7 +96,7 @@ CreateBindingGroup :: proc(index: u32, buffers: []UniformInfo, stages: bit_set[w
     group := BindingGroup {
         index = index,
         layout = wgpu.DeviceCreateBindGroupLayout(gfx.device, &bind_group_layout_desc),
-        bindingGroup = wgpu.DeviceCreateBindGroup(frost.gfx.device, &wgpu.BindGroupDescriptor {
+        bindingGroup = wgpu.DeviceCreateBindGroup(gfx.device, &wgpu.BindGroupDescriptor {
             layout = bind_group_layout,
             entryCount = len(bindings),
             entries = raw_data(bindings),
@@ -114,11 +111,10 @@ CreateBindingGroup :: proc(index: u32, buffers: []UniformInfo, stages: bit_set[w
 }
 
 BindGroup :: proc(group: ^BindingGroup) {
-    wgpu.RenderPassEncoderSetBindGroup(frost.gfx.render_pass, group.index, group.bindingGroup)
+    wgpu.RenderPassEncoderSetBindGroup(gfx.render_pass, group.index, group.bindingGroup)
 }
 
-CreateTextureBindingGroup :: proc(index: u32, textures: []frost.Texture, stages: bit_set[wgpu.ShaderStage; u64], name: string = "TexBindingGroup") -> BindingGroup {
-    gfx := frost.gfx
+CreateTextureBindingGroup :: proc(index: u32, textures: []Texture, stages: bit_set[wgpu.ShaderStage; u64], name: string = "TexBindingGroup") -> BindingGroup {
     entrys := make_slice([]wgpu.BindGroupLayoutEntry, len(textures) * 2)
 
 
@@ -167,7 +163,7 @@ CreateTextureBindingGroup :: proc(index: u32, textures: []frost.Texture, stages:
     group := BindingGroup {
         index = index,
         layout = bind_group_layout,
-        bindingGroup = wgpu.DeviceCreateBindGroup(frost.gfx.device, &wgpu.BindGroupDescriptor {
+        bindingGroup = wgpu.DeviceCreateBindGroup(gfx.device, &wgpu.BindGroupDescriptor {
             layout = bind_group_layout,
             entryCount = len(bindings),
             entries = raw_data(bindings),

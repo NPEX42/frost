@@ -1,4 +1,4 @@
-package frostGfx
+package frost
 
 import "core:os"
 import "core:log"
@@ -6,9 +6,8 @@ import "core:fmt"
 import "core:strings"
 import "vendor:cgltf"
 import "vendor:wgpu"
-import ".."
 
-import "../tinyobj"
+import "tinyobj"
 
 import "core:math/rand"
 
@@ -38,10 +37,9 @@ CreateStaticMeshFromSlices :: proc(vertices: []Vertex3D, indices: []u16) -> Stat
 }
 
 DrawStaticMesh :: proc(mesh: ^StaticMesh, instances: u32 = 1) {
-    g := frost.gfx;
     BindVertexBuffer(&mesh.vbo)
     BindIndexBufferU16(&mesh.ibo)
-    wgpu.RenderPassEncoderDrawIndexed(g.render_pass, u32(len(mesh.indices)), instances, 0, 0, 0);
+    wgpu.RenderPassEncoderDrawIndexed(gfx.render_pass, u32(len(mesh.indices)), instances, 0, 0, 0);
 }
 
 LoadStaticMesh_OBJ :: proc(filepath: string, base_dir: string = "") -> (mesh: StaticMesh, success: bool) {

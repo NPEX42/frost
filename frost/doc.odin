@@ -1,2 +1,2 @@
 /// Frost Engine Graphics Layer
-package frostGfx
+package frost

@@ -1,11 +1,10 @@
-package frostGfx
+package frost
 
 import "core:encoding/json"
 import "core:log"
 import "core:os"
 import "vendor:wgpu"
 
-import ".."
 
 MaterialSpec :: struct {
     name: string,
@@ -70,9 +69,8 @@ matsec_delete :: proc(spec: ^MaterialSpec) {
     json.destroy_value(spec.json_data)
 }
 
-CreateRenderPipeline :: proc(spec: ^MaterialSpec) -> ^RenderPipeline {
+CreateRenderPipeline :: proc(spec: ^MaterialSpec, $VTX: typeid) -> ^RenderPipeline {
     rp := new(RenderPipeline)
-    gfx := frost.gfx
 
     shader_src, ok := os.read_entire_file_from_filename(spec.sourcePath)
     defer delete(shader_src)
@@ -97,10 +95,10 @@ CreateRenderPipeline :: proc(spec: ^MaterialSpec) -> ^RenderPipeline {
         rp.layout = wgpu.DeviceCreatePipelineLayout(gfx.device, spec.layout_desc)
     }
 
-    vertex_attribs := frost.VertexLayout(Vertex3D)
+    vertex_attribs := VertexLayout(VTX)
 
     vertex_input := wgpu.VertexBufferLayout {
-        arrayStride = size_of(Vertex3D),
+        arrayStride = size_of(VTX),
         attributeCount = uint(len(vertex_attribs)),
         attributes = raw_data(vertex_attribs),
         stepMode = .Vertex
@@ -153,7 +151,7 @@ CreateRenderPipeline :: proc(spec: ^MaterialSpec) -> ^RenderPipeline {
 
 
 BindRenderPipeline :: proc(rp: ^RenderPipeline, pass: wgpu.RenderPassEncoder) {
-    gfx := frost.gfx
+
     if rp.pipeline != nil {
         wgpu.RenderPassEncoderSetPipeline(pass, rp.pipeline)
     } else {
@@ -162,7 +160,6 @@ BindRenderPipeline :: proc(rp: ^RenderPipeline, pass: wgpu.RenderPassEncoder) {
 }
 
 ReleaseRenderPipeline :: proc(rp: ^RenderPipeline) {
-    gfx := frost.gfx
     
     wgpu.ShaderModuleRelease(rp.module)
     wgpu.PipelineLayoutRelease(rp.layout)
