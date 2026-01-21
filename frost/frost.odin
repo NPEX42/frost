@@ -1,6 +1,7 @@
 /// Frost Engine Core
 package frost
 
+import "core:strings"
 import "core:time"
 import "core:thread"
 import "core:os"
@@ -86,7 +87,7 @@ init :: proc(app: ^Application) {
         log.panic("Failed To Initialize GLFW.")
     }
     glfw.WindowHint(glfw.CLIENT_API, glfw.NO_API)
-    gfx.window = glfw.CreateWindow(1080, 720, "Frost Engine", nil, nil);
+    gfx.window = glfw.CreateWindow(i32(app.width), i32(app.height), strings.clone_to_cstring(app.title, context.temp_allocator), nil, nil);
 
     gfx.instance = wgpu.CreateInstance(nil)
     if gfx.instance == nil {
@@ -181,7 +182,7 @@ pollEvents :: proc() {
 
 run :: proc() {
 
-
+    InitR2D()
 
     application.on_create();
     dt, accumTime: f32 = 0.0, 0
@@ -263,8 +264,12 @@ render :: proc() {
 
     application.on_render(&gfx, render_pass_enc);
 
+    FlushR2D()
+
     wgpu.RenderPassEncoderEnd(render_pass_enc)
     wgpu.RenderPassEncoderRelease(render_pass_enc)
+
+    
 
     command_buffer := wgpu.CommandEncoderFinish(command_encoder, nil)
     defer wgpu.CommandBufferRelease(command_buffer)
@@ -272,6 +277,7 @@ render :: proc() {
     wgpu.QueueSubmit(gfx.queue, {command_buffer})
 
     wgpu.SurfacePresent(gfx.surface)
+
 
 
 }

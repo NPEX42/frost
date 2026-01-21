@@ -11,14 +11,10 @@ import "core:mem"
 
 
 
-import frostGfx "frost/graphics"
-import frostMaths "frost/maths"
+pipeline: ^frost.RenderPipeline;
 
 
-pipeline: ^frostGfx.RenderPipeline;
-
-
-vertices := []frostGfx.Vertex3D {
+vertices := []frost.Vertex3D {
     {position = {-1,  1, 0}, color = {1, 0, 0}, UV0 = {0, 1}},
     {position = {-1, -1, 0}, color = {0, 1, 0}, UV0 = {0, 0}},
     {position = { 1, -1, 0}, color = {0, 0, 1}, UV0 = {1, 0}},
@@ -30,7 +26,7 @@ indices := []u16 {
     2, 3, 0
 }
 
-mesh: frostGfx.StaticMesh
+mesh: frost.StaticMesh
 
 
 
@@ -40,24 +36,24 @@ FrameData :: struct #align(16) {
 }
 
 CameraData :: struct #align(16) {
-    proj: frostMaths.mat4f,
-    view: frostMaths.mat4f,
+    proj: frost.mat4f,
+    view: frost.mat4f,
 }
 
 ModelData :: struct #align(16) {
-    model: frostMaths.mat4f
+    model: frost.mat4f
 }
 
-uniformBuffer: ^frostGfx.UniformBuffer(FrameData)
-cameraBuffer: ^frostGfx.UniformBuffer(CameraData)
-modelBuffer: ^frostGfx.UniformBuffer(ModelData)
+uniformBuffer: ^frost.UniformBuffer(FrameData)
+cameraBuffer: ^frost.UniformBuffer(CameraData)
+modelBuffer: ^frost.UniformBuffer(ModelData)
 
 bindGroup: wgpu.BindGroup
 cameraGroup: wgpu.BindGroup
 
-shaderMat: frostGfx.BindingGroup
+shaderMat: frost.BindingGroup
 
-textureGroup: frostGfx.BindingGroup
+textureGroup: frost.BindingGroup
 
 cameraPos: [3]f32 = {0, 1, 5}
 
@@ -67,7 +63,7 @@ main :: proc() {
         context.logger = log.create_console_logger()
     }
 
-    attribs := frost.VertexLayout(frostGfx.Vertex3D)
+    attribs := frost.VertexLayout(frost.Vertex3D)
 
     for a in attribs {
         fmt.printfln("Attrib: %v", a)
@@ -78,6 +74,10 @@ main :: proc() {
     
 
     app := frost.Application {
+        width = 1080,
+        height = 720,
+        title = "Sandbox App",
+        
         on_create = create,
         on_update = update,
         on_render = render,
@@ -90,32 +90,32 @@ main :: proc() {
 
 create :: proc() {
 
-    mesh = frostGfx.CreateStaticMeshFromSlices(vertices, indices)
+    mesh = frost.CreateStaticMeshFromSlices(vertices, indices)
 
     tex := frost.LoadTexture("res/materials/Atlas.png")
 
     frost.gfx.clear_color = {0.1, 0.2, 0.3, 1.0}
 
-    spec := frostGfx.materialspec_load("res/materials/red.json")
+    spec := frost.materialspec_load("res/materials/red.json")
     fmt.println(spec.name)
     fmt.println(spec.sourcePath)
     fmt.printfln("Topology: %v", spec.topology)
 
 
-    uniformBuffer = frostGfx.CreateUniformBufferWithData(FrameData, &FrameData {time = 0, gamma = 2.4})
-    cameraBuffer = frostGfx.CreateUniformBufferWithData(CameraData, &CameraData {
-        proj = linalg.matrix4_perspective(math.to_radians_f32(70.0), 1080.0 / 720.0, 0.1, 1000.0),
+    uniformBuffer = frost.CreateUniformBufferWithData(FrameData, &FrameData {time = 0, gamma = 2.4})
+    cameraBuffer = frost.CreateUniformBufferWithData(CameraData, &CameraData {
+        proj = linalg.matrix4_perspective(math.to_radians_f32(70.0), f32(frost.application.width) / f32(frost.application.height), 0.1, 1000.0),
         view = linalg.inverse(
             linalg.matrix4_translate_f32(cameraPos)
         )
     })
 
-    modelBuffer = frostGfx.CreateUniformBufferWithData(ModelData, &ModelData {
-        model = linalg.identity(frostMaths.mat4f)
+    modelBuffer = frost.CreateUniformBufferWithData(ModelData, &ModelData {
+        model = linalg.identity(frost.mat4f)
     })
 
-    shaderMat = frostGfx.CreateBindingGroup(0, 
-        []frostGfx.UniformInfo {
+    shaderMat = frost.CreateBindingGroup(0, 
+        []frost.UniformInfo {
             uniformBuffer.info,
             cameraBuffer.info,
             modelBuffer.info
@@ -123,7 +123,7 @@ create :: proc() {
             {.Vertex, .Fragment}
     )
 
-    textureGroup = frostGfx.CreateTextureBindingGroup(1,
+    textureGroup = frost.CreateTextureBindingGroup(1,
         {tex},
         {.Vertex, .Fragment}
     )
@@ -139,9 +139,9 @@ create :: proc() {
         label = spec.name
     }
 
-    pipeline = frostGfx.CreateRenderPipeline(spec)
+    pipeline = frost.CreateRenderPipeline(spec, frost.Vertex3D)
 
-    frostGfx.matsec_delete(spec)
+    frost.matsec_delete(spec)
 
     
     
@@ -158,18 +158,18 @@ angle: f32 = 0
 
 update :: proc(dt: f32) {
     accumTime += dt
-    frostGfx.SetUniformData(FrameData, uniformBuffer, &FrameData {
+    frost.SetUniformData(FrameData, uniformBuffer, &FrameData {
         time = math.sin(accumTime),
         gamma = 2.4
     });
 
-    model := linalg.identity(frostMaths.mat4f)
+    model := linalg.identity(frost.mat4f)
 
     model *= linalg.matrix4_rotate_f32(math.to_radians_f32(30), {1, 0, 0})
     model *= linalg.matrix4_rotate_f32(math.to_radians_f32(angle), {0, 1, 0})
     
 
-    frostGfx.SetUniformData(ModelData, modelBuffer, &ModelData {
+    frost.SetUniformData(ModelData, modelBuffer, &ModelData {
         model = model
     })
 
@@ -178,21 +178,21 @@ update :: proc(dt: f32) {
 }
 
 render :: proc(gfx: ^frost.GraphicsContext, render_pass: wgpu.RenderPassEncoder) {
-    frostGfx.BindRenderPipeline(pipeline, render_pass)
-    frostGfx.BindGroup(&shaderMat)
-    frostGfx.BindGroup(&textureGroup)
-    frostGfx.DrawStaticMesh(&mesh)
+    frost.BindRenderPipeline(pipeline, render_pass)
+    frost.BindGroup(&shaderMat)
+    frost.BindGroup(&textureGroup)
+    frost.DrawStaticMesh(&mesh)
 }
 
 shutdown :: proc() {
-    frostGfx.ReleaseUniformBuffer(FrameData, uniformBuffer)
-    frostGfx.ReleaseUniformBuffer(CameraData, cameraBuffer)
-    frostGfx.ReleaseUniformBuffer(ModelData, modelBuffer)
-    frostGfx.ReleaseRenderPipeline(pipeline)
+    frost.ReleaseUniformBuffer(FrameData, uniformBuffer)
+    frost.ReleaseUniformBuffer(CameraData, cameraBuffer)
+    frost.ReleaseUniformBuffer(ModelData, modelBuffer)
+    frost.ReleaseRenderPipeline(pipeline)
 }
 
 resize :: proc(width, height: f32) {
-    frostGfx.SetUniformData(
+    frost.SetUniformData(
         CameraData, cameraBuffer, &CameraData {
             proj = linalg.matrix4_perspective(math.to_radians_f32(70.0), width / height, 0.1, 1000.0),
             view = linalg.inverse(

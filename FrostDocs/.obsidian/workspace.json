@@ -15,9 +15,9 @@
               "state": {
                 "file": "Architecture.canvas",
                 "viewState": {
-                  "x": 277.40543680993113,
-                  "y": -269.94735277490486,
-                  "zoom": 0.19999999999999996
+                  "x": 303.14685922010676,
+                  "y": -367.5767899298851,
+                  "zoom": 0
                 }
               },
               "icon": "lucide-layout-dashboard",
@@ -169,15 +169,21 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "obsidian-excalidraw-plugin:New drawing": false
     }
   },
   "active": "9bdc7fae0bab6e6d",
   "lastOpenFiles": [
+    "Docs/Overview.md",
+    "Docs/RendererAPI.svg",
+    "Docs/RendererAPI.svg",
+    "Excalidraw/Drawing 2026-01-20 10.52.37.excalidraw.md",
+    "Excalidraw/Drawing 2026-01-20 10.52.37.excalidraw.png",
+    "Architecture.canvas",
+    "Excalidraw",
     "Docs/Overview.md.part",
     "Untitled.base.part",
-    "Docs/Overview.md",
-    "Architecture.canvas",
     "Untitled.base",
     "Docs",
     "Welcome.md"

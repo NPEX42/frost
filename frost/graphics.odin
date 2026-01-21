@@ -1,4 +1,4 @@
-package frostGfx
+package frost
 
 Vertex3D :: struct {
     position: [3]f32,
